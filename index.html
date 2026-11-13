@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>今日の数字｜ホシカゾエ</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#10143a">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="今日の数字">
+<meta name="description" content="誕生日でわかる、今日のパーソナルデイナンバー。案内役の3人が、毎日ひとことコメントをくれる無料の数秘術アプリです。">
+<!-- OGP: 公開後のURLに合わせて、下の3か所の https://YOUR-USERNAME.github.io/YOUR-REPO/ を書き換えてください -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ホシカゾエの数秘術">
+<meta property="og:title" content="今日の数字｜ホシカゾエ">
+<meta property="og:description" content="誕生日でわかる、今日のパーソナルデイナンバー。案内役の3人が、毎日ひとことコメントをくれます。">
+<meta property="og:url" content="https://YOUR-USERNAME.github.io/YOUR-REPO/">
+<meta property="og:image" content="https://YOUR-USERNAME.github.io/YOUR-REPO/images/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="今日の数字｜ホシカゾエ">
+<meta name="twitter:description" content="誕生日でわかる、今日のパーソナルデイナンバー。毎日ひとことコメント付き。">
+<meta name="twitter:image" content="https://YOUR-USERNAME.github.io/YOUR-REPO/images/ogp.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6efe0;--panel:#fffaf0;--ink:#2a2440;--sub:#6a6280;--gold:#a8802a;--line:#e1d3b3;
+  --kurenai:#b8363a;--polaris:#3f7fa6;--akari:#c98418;--on-accent:#fff;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#10143a;--panel:#191e4d;--ink:#f1ead8;--sub:#a9a6c9;--gold:#e0bd68;--line:#343a78;
+    --kurenai:#e0605f;--polaris:#7ab6d9;--akari:#efb04a;--on-accent:#10143a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10143a;--panel:#191e4d;--ink:#f1ead8;--sub:#a9a6c9;--gold:#e0bd68;--line:#343a78;
+  --kurenai:#e0605f;--polaris:#7ab6d9;--akari:#efb04a;--on-accent:#10143a;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;line-height:1.8;-webkit-text-size-adjust:100%}
+main{max-width:30rem;margin:0 auto;padding:1.5rem 1.25rem 3rem}
+h1,h2{margin:0;font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;font-weight:600}
+.site{font-size:.9rem;color:var(--sub);letter-spacing:.08em;margin:0 0 .25rem}
+.date{font-size:1.05rem;margin:0 0 1.5rem}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:1rem;padding:1.25rem}
+label{display:block;font-size:.9rem;color:var(--sub);margin-bottom:.5rem}
+.row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:.6rem;padding:.55rem .6rem;min-width:4.5rem}
+button,.btn{font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:2rem;padding:.7rem 1.4rem;background:var(--gold);color:var(--on-accent);text-decoration:none;display:inline-block}
+button.ghost{background:none;color:var(--sub);border:1px solid var(--line);font-weight:500;padding:.5rem 1rem;font-size:.9rem}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hero{text-align:center;margin:0 0 1.5rem}
+.ring{width:12rem;height:12rem;margin:0 auto 1rem;border-radius:50%;border:1px solid var(--gold);box-shadow:0 0 0 .5rem var(--bg),0 0 0 calc(.5rem + 1px) var(--line);display:flex;align-items:center;justify-content:center}
+.num{font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;font-weight:800;font-size:7.5rem;line-height:1;color:var(--gold)}
+.kw{font-size:1.5rem}
+.lead{margin:.5rem 0 0;color:var(--sub);font-size:.95rem}
+.guide{display:flex;gap:.75rem;margin:0 0 1.25rem;align-items:flex-start}
+.face{flex:none;width:5.5rem;height:auto;display:block}
+.what{margin:.9rem auto 0;max-width:26rem;text-align:left;font-size:.9rem}
+.what summary{cursor:pointer;color:var(--gold);text-align:center;font-weight:700}
+.what p{margin:.5rem 0 0;color:var(--sub)}
+.lp .what{margin:.6rem 0 0;max-width:none}
+.lp .what summary{text-align:left}
+.lp{margin:0 0 1.25rem}
+.lp h2{font-size:1rem;color:var(--gold);margin-bottom:.25rem}
+.lp .big{display:flex;align-items:baseline;gap:.6rem;margin:0}
+.lp .ln{font-family:"Shippori Mincho","Hiragino Mincho ProN",serif;font-weight:800;font-size:2.4rem;line-height:1.2;color:var(--gold)}
+.lp .lk{font-size:1.1rem}
+.lp p{margin:.25rem 0 0}
+input[type=number]{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:.6rem;padding:.55rem .6rem;width:6rem}
+.bubble{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:.25rem 1rem 1rem 1rem;padding:.8rem 1rem}
+.who{font-size:.85rem;font-weight:700;margin:0 0 .15rem}
+.say{margin:0}
+.act{margin:0 0 1.25rem}
+.act h2{font-size:1rem;color:var(--gold);margin-bottom:.25rem}
+.act p{margin:0}
+.tomorrow{font-size:.9rem;color:var(--sub);margin:0 0 1.25rem}
+.cta{margin-top:1.5rem;text-align:center}
+.cta p{margin:0 0 1rem;font-size:.95rem}
+.tools{display:flex;gap:.5rem;justify-content:center;margin-top:1.25rem;flex-wrap:wrap}
+.note{font-size:.78rem;color:var(--sub);margin:1.5rem 0 0;text-align:center}
+input[type=text]{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:.6rem;padding:.55rem .7rem;width:100%}
+.conv{font-size:.82rem;color:var(--sub);min-height:1.2em;margin:.3rem 0 0}
+.err{font-size:.85rem;color:var(--kurenai);min-height:1.2em;margin:.5rem 0}
+.core{margin:0 0 1.25rem}
+.core h2{font-size:1rem;color:var(--gold);margin-bottom:.6rem}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.cc{border:1px solid var(--line);border-radius:.8rem;padding:.7rem .5rem;text-align:center;background:var(--bg)}
+.cl{font-size:.8rem;color:var(--sub)}
+.cn{font-family:"Shippori Mincho","Hiragino Mincho ProN",serif;font-weight:800;font-size:2.1rem;line-height:1.3;color:var(--gold)}
+.ck{font-size:.95rem;font-weight:700}
+.cd{font-size:.75rem;color:var(--sub);line-height:1.5;margin-top:.2rem}
+.chint{font-size:.85rem;color:var(--sub);margin:.7rem 0 0}
+.core .what{margin:.6rem 0 0;max-width:none}.core .what summary{text-align:left}
+#modal{position:fixed;inset:0;background:rgba(8,10,30,.78);display:flex;align-items:center;justify-content:center;padding:calc(1rem + env(safe-area-inset-top,0px)) 1rem calc(1rem + env(safe-area-inset-bottom,0px));z-index:50}
+#modal .box{background:var(--panel);border:1px solid var(--line);border-radius:1rem;padding:1rem;max-width:24rem;width:100%;max-height:100%;overflow:auto;text-align:center}
+#modal img{max-width:100%;max-height:55vh;border-radius:.6rem;display:block;margin:0 auto .8rem}
+#modal p{font-size:.82rem;color:var(--sub);margin:.6rem 0 0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <p class="site">ホシカゾエの数秘術</p>
+
+  <section id="setup" class="panel" hidden>
+    <h1 style="font-size:1.4rem;margin-bottom:.5rem">今日の数字を見てみよう</h1>
+    <p style="margin:0 0 1rem;color:var(--sub);font-size:.95rem">生年月日を入れると、あなたの基本の数字と、今日のパーソナルデイナンバーがわかります。入力した内容はこの端末にだけ保存されます。</p>
+    <label for="yy">生年月日（西暦）</label>
+    <div class="row">
+      <input id="yy" type="number" inputmode="numeric" min="1900" max="2100" placeholder="1990" aria-label="年"><span>年</span>
+      <select id="mm" aria-label="月"></select><span>月</span>
+      <select id="dd" aria-label="日"></select><span>日</span>
+    </div>
+    <label for="nm" style="margin-top:1rem">お名前（任意）<small>ひらがな・カタカナ・ローマ字</small></label>
+    <input id="nm" type="text" autocomplete="off" placeholder="はなこ やまだ / Hanako Yamada">
+    <p class="conv" id="conv"></p>
+    <p class="err" id="err" role="alert"></p>
+    <button id="go" type="button">見てみる</button>
+  </section>
+
+  <section id="view" hidden>
+    <p class="date" id="today"></p>
+    <div class="hero">
+      <div class="ring"><span class="num" id="num" aria-label="今日の数字"></span></div>
+      <h1 class="kw" id="kw"></h1>
+      <p class="lead" id="lead"></p>
+      <details class="what"><summary>パーソナルデイナンバーとは？</summary>
+        <p>誕生日と今日の日付から出す、その日のテーマを表す数字です。毎日ひとつずつ進み、9の次は1に戻ります（月が変わるタイミングで流れが切り替わります）。「今日はどう過ごすと心地よいか」のヒントとして、気軽にお使いください。</p>
+      </details>
+    </div>
+
+    <div class="guide">
+      <img class="face" id="face" alt="">
+      <div class="bubble">
+        <p class="who" id="who"></p>
+        <p class="say" id="say"></p>
+      </div>
+    </div>
+
+    <div class="act panel">
+      <h2>今日の小さな一歩</h2>
+      <p id="act"></p>
+    </div>
+
+    <div class="lp panel">
+      <h2>あなたの基本の数字</h2>
+      <p class="big"><span class="ln" id="ln"></span><span class="lk" id="lk"></span></p>
+      <p id="lt"></p>
+      <details class="what"><summary>ライフパスナンバーとは？</summary>
+        <p>生年月日の数字をすべて足して、1桁（11・22・33はそのまま）にした数字です。生まれ持った性質や、人生を通して大切にしたいテーマを表すといわれています。</p>
+      </details>
+    </div>
+
+    <div class="core panel">
+      <h2>コア・ナンバーズ</h2>
+      <div class="cgrid" id="cgrid"></div>
+      <p class="chint" id="chint">お名前を入れると、魂数・表現数・印象数もわかります（下の「入力を変える」から）。</p>
+      <details class="what"><summary>コア・ナンバーズとは？</summary>
+        <p>あなたという人を形づくる、基本の数字のことです。生年月日から出る「ライフパス」「誕生日数」に加えて、お名前（ローマ字）から出る「魂数」「表現数」「印象数」があります。</p>
+      </details>
+    </div>
+
+    <p class="tomorrow" id="tomorrow"></p>
+
+    <div class="tools">
+      <button id="shareimg" type="button">画像で共有</button>
+      <button id="share" type="button" class="ghost">テキストをコピー</button>
+      <button id="change" type="button" class="ghost">入力を変える</button>
+    </div>
+
+    <section class="cta panel">
+      <p>今日の数字は、あなたの1年の流れの一部です。本質・強み・12か月の運勢までまとめた「あなた専用の取扱説明書」を、ココナラで作成しています。</p>
+      <a class="btn" href="https://coconala.com/services/4477760" target="_blank" rel="noopener">鑑定書の詳細を見る</a>
+    </section>
+  </section>
+
+  <section id="inst" class="panel" hidden style="margin-top:1rem;text-align:center">
+    <p id="insttxt" style="margin:0 0 .75rem;font-size:.9rem"></p>
+    <button id="instbtn" type="button" hidden>ホーム画面に追加</button>
+  </section>
+
+  <p class="note">数秘術による娯楽・自己理解のためのものです。結果を保証するものではありません。</p>
+</main>
+<div id="modal" role="dialog" aria-modal="true" aria-label="共有用の画像" hidden>
+  <div class="box">
+    <img id="mimg" alt="今日の数字の共有用画像">
+    <div class="tools" style="margin-top:0">
+      <button id="msend" type="button" hidden>共有する</button>
+      <a id="msave" class="btn" download="hoshikazoe-today.png">画像を保存</a>
+      <button id="mclose" type="button" class="ghost">閉じる</button>
+    </div>
+    <p>画像を長押しして保存することもできます。</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var KEY="hk_birth";
+  var N=[null,
+   {k:"はじまりの日",t:"新しいことに手をつけるのに向いた日。小さくても、最初の一歩を。",a:"先延ばしにしていたことを1つ始める"},
+   {k:"よりそいの日",t:"焦らず、人の気持ちに耳を傾ける日。急いで結論を出さなくて大丈夫。",a:"誰かに「ありがとう」を伝える"},
+   {k:"たのしむ日",t:"話す・書く・遊ぶ。表現すると流れがよくなる日。",a:"好きなことに30分使う"},
+   {k:"ととのえる日",t:"土台を固める日。片づけや整理、地味な作業がはかどります。",a:"机かカバンの中を整理する"},
+   {k:"ひらく日",t:"変化や刺激に向いた日。いつもと違う選択が、いい風を連れてきます。",a:"普段通らない道を歩いてみる"},
+   {k:"いつくしむ日",t:"家族や身近な人、そして自分をいたわる日。心地よさを大切に。",a:"温かい飲み物でひと息つく"},
+   {k:"しずまる日",t:"ひとりで考え、学び、休むのに向く日。内側の声に耳をすませて。",a:"スマホを置いて静かな時間をつくる"},
+   {k:"みのらせる日",t:"仕事やお金など、現実的なことを前に進める日。決めて動くと結果につながります。",a:"後回しの手続きや連絡を1つ片づける"},
+   {k:"手ばなす日",t:"区切りと感謝の日。終わらせるものを整え、次への余白をつくります。",a:"不要なものを1つ手放す"}
+  ];
+  var L={1:["開拓者","自分の道を切り拓く、リーダー気質の人。"],2:["調和の人","人の気持ちに寄りそう、やさしい調整役。"],3:["表現者","明るく創造的で、楽しさを広げる人。"],4:["積み上げる人","努力を重ねて形にする、安定感のある人。"],5:["自由人","変化を楽しみ、軽やかに動く冒険家。"],6:["愛の人","世話好きで、まわりを包み込む人。"],7:["探究者","深く考え、物事の本質を見抜く思索家。"],8:["実現者","大きな目標を現実にする力をもつ人。"],9:["見守る人","広い心で人を理解する、共感力の高い人。"],11:["ひらめきの人","直感が鋭く、人の心に灯をともす人。"],22:["大きな夢の設計者","大きな理想を現実の形にする人。"],33:["無償の愛の人","惜しみなく人を支え、癒やす人。"]};
+  var C=[
+   {n:"紅",tag:"姉御肌の占い師",c:"var(--kurenai)",h:"#e0605f",i:"images/kurenai.webp",s:[null,
+    "今日は始めた者勝ちだよ。迷ってるなら、ほら、さっさと一歩目いきな！",
+    "そんなに急ぐんじゃないよ。相手の話をちゃんと聞いてやりな。それが今日の勝ち筋さ。",
+    "今日は堅いこと抜きだ。思いっきり楽しんで、言いたいことは言っちゃいな！",
+    "地味な仕事ほど、あとで効いてくるんだよ。今日はコツコツ片づけていきな。",
+    "いつもと違うことをやってみな。たまには流れに乗っちゃうのも悪くないよ。",
+    "頑張ってばかりじゃ持たないよ。今日は自分もちゃんと労ってやりな。",
+    "今日は無理に動かなくていい。ひとりでゆっくり、頭と心を休ませな。",
+    "ここ一番は今日だよ。腹をくくって決めたら、あとは進むだけさ！",
+    "終わらせるのも立派な仕事だよ。ありがとうって言って、すっぱり手放しな。"]},
+   {n:"ポラリス",tag:"星読みの猫",c:"var(--polaris)",h:"#7ab6d9",i:"images/polaris.webp",s:[null,
+    "今日は新しいことを始めるのにぴったりの日にゃ。小さな一歩で大丈夫にゃ！",
+    "今日はゆっくり、相手の気持ちに寄りそう日にゃ。のんびりいくにゃ〜",
+    "今日はいっぱい楽しむ日にゃ。おしゃべりも、遊びも、思いきりやるにゃ！",
+    "今日はお部屋の整理にいい日にゃ。ととのうと、心も軽くなるにゃ。",
+    "今日は新しい風が吹く日にゃ。いつもと違う道、歩いてみるにゃ？",
+    "今日は自分にやさしくする日にゃ。ぽかぽかするものを選ぶといいにゃ。",
+    "今日は静かに過ごす日にゃ。ひなたぼっこするみたいに、ゆっくり休むにゃ。",
+    "今日は動けば形になる日にゃ。気になってたこと、ひとつ片づけるにゃ！",
+    "今日は区切りの日にゃ。今までに感謝して、そっと手ばなすにゃ。"]},
+   {n:"あかり",tag:"ノリのいい親友",c:"var(--akari)",h:"#efb04a",i:"images/akari.webp",s:[null,
+    "今日スタートの日じゃん！やりたかったこと、ちょっとだけでも始めちゃお！",
+    "今日は焦らなくて大丈夫だよ〜。誰かの話をゆっくり聞いてあげよっか。",
+    "今日めっちゃ楽しめる日だよ！しゃべって、笑って、思いっきり遊ぼ！",
+    "今日は整える日だね。片づけたらスッキリするから、ちょっとだけやってみて！",
+    "今日はいつもと違うことするチャンスじゃん！ちょっと冒険してみよ〜！",
+    "今日は自分にもやさしくしてあげてね。ごほうびタイム作っちゃお！",
+    "今日はひとりでのんびりでOK！ちゃんと休むのも大事なんだから。",
+    "今日は決めて動く日！やるって決めたら、もう半分できたようなもんだよ！",
+    "今日は区切りの日だね。いろいろありがとって言って、スッキリ手放そ！"]}
+  ];
+  var $=function(id){return document.getElementById(id)};
+  var cur=null;
+  var K="あa いi うu えe おo かka きki くku けke こko さsa しshi すsu せse そso たta ちchi つtsu てte とto なna にni ぬnu ねne のno はha ひhi ふfu へhe ほho まma みmi むmu めme もmo やya ゆyu よyo らra りri るru れre ろro わwa をo んn ゐi ゑe がga ぎgi ぐgu げge ごgo ざza じji ずzu ぜze ぞzo だda ぢji づzu でde どdo ばba びbi ぶbu べbe ぼbo ぱpa ぴpi ぷpu ぺpe ぽpo ゔvu".split(" ").reduce(function(m,t){m[t[0]]=t.slice(1);return m},{});
+  var SM={"ゃ":"a","ゅ":"u","ょ":"o"};
+  function toRomaji(s){
+    s=s.normalize("NFKC").replace(/[ァ-ヶ]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-96)});
+    if(/[\u4E00-\u9FFF]/.test(s))return null;
+    var o="",dbl=false,last="",i,c,r,n,st;
+    for(i=0;i<s.length;i++){
+      c=s[i];
+      if(c==="っ"){dbl=true;continue}
+      if(c==="ー")continue;
+      r=K[c];
+      if(r===undefined){o+=c;dbl=false;last="";continue}
+      if(last&&((c==="う"&&/[ou]$/.test(last)&&"あいえお".indexOf(s[i+1]||"-")<0)||(c==="お"&&/o$/.test(last))))continue;
+      n=SM[s[i+1]];
+      if(n&&r.slice(-1)==="i"){st=r.slice(0,-1);r=(["sh","ch","j"].indexOf(st)>=0?st:st+"y")+n;i++}
+      if(dbl){r=(r[0]==="c"?"t":r[0])+r;dbl=false}
+      last=r;o+=r;
+    }
+    return o;
+  }
+  function sumL(s,f){var t=0;for(var i=0;i<s.length;i++)if(f(s[i]))t+=(s.charCodeAt(i)-65)%9+1;return t}
+  function coreNames(raw){
+    var rom=toRomaji(raw);if(rom===null)return null;
+    var nm=rom.toUpperCase().replace(/[^A-Z]/g,"");if(!nm)return {};
+    var v=function(c){return "AEIOU".indexOf(c)>=0};
+    return {soul:red(sumL(nm,v)),destiny:red(sumL(nm,function(){return true})),pers:red(sumL(nm,function(c){return !v(c)}))};
+  }
+  function dr(n){return n===0?0:1+(n-1)%9}
+  function pday(b,d){
+    var py=dr(b.m+b.d+d.getFullYear());
+    var pm=dr(py+d.getMonth()+1);
+    return dr(pm+d.getDate());
+  }
+  function red(n){while(n>9&&n!==11&&n!==22&&n!==33){var q=0,u=String(n);for(var i=0;i<u.length;i++)q+=+u[i];n=q}return n}
+  function lifePath(b){var t=String(b.y)+String(b.m)+String(b.d),n=0;for(var i=0;i<t.length;i++)n+=+t[i];return red(n)}
+  function charIdx(d){return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)%3}
+  function load(){try{var v=JSON.parse(localStorage.getItem(KEY));if(v&&v.y>=1900&&v.m>=1&&v.m<=12&&v.d>=1&&v.d<=31)return v}catch(e){}return null}
+  function save(b){try{localStorage.setItem(KEY,JSON.stringify(b))}catch(e){}}
+  var shareText="",shownKey="";
+  function dkey(){var n=new Date();return n.getFullYear()+"-"+n.getMonth()+"-"+n.getDate()}
+
+  function show(b){
+    var now=new Date(),tm=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
+    shownKey=dkey();var n=pday(b,now),info=N[n],ch=C[charIdx(now)];
+    var w=["日","月","火","水","木","金","土"][now.getDay()];
+    $("today").textContent=(now.getMonth()+1)+"月"+now.getDate()+"日（"+w+"）";
+    $("num").textContent=n;
+    $("kw").textContent=info.k;
+    $("lead").textContent=info.t;
+    $("face").src=ch.i;$("face").alt=ch.n;
+    $("who").textContent=ch.n+"｜"+ch.tag;$("who").style.color=ch.c;
+    $("say").textContent=ch.s[n];
+    $("act").textContent=info.a;
+    var lp=lifePath(b);$("ln").textContent=lp;$("lk").textContent=L[lp][0];$("lt").textContent=L[lp][1];
+    var cr=b.n?(coreNames(b.n)||{}):{};
+    var cs=[["誕生日数","生まれ持った才能のヒント",red(b.d)],["魂数","心の奥にある本音・望み",cr.soul],["表現数","才能や、自然に出せる力",cr.destiny],["印象数","人に与える第一印象",cr.pers]],h="";
+    cs.forEach(function(c){if(c[2]===undefined)return;var v=c[2];h+='<div class="cc"><div class="cl">'+c[0]+'</div><div class="cn">'+(v||"—")+'</div><div class="ck">'+(v&&L[v]?L[v][0]:"")+'</div><div class="cd">'+c[1]+'</div></div>'});
+    $("cgrid").innerHTML=h;$("chint").hidden=cr.soul!==undefined;
+    cur={n:n,info:info,ch:ch,date:$("today").textContent};
+    var tn=pday(b,tm);
+    $("tomorrow").textContent="明日は「"+N[tn].k+"」（"+tn+"）の日です。";
+    shareText="私のライフパスナンバーは"+lp+"。今日のパーソナルデイナンバーは"+n+"「"+info.k+"」でした。\n"+ch.n+"：「"+ch.s[n]+"」\n"+location.href;
+    $("setup").hidden=true;$("view").hidden=false;
+  }
+
+  var mm=$("mm"),dd=$("dd");
+  for(var i=1;i<=12;i++){mm.add(new Option(i,i))}
+  for(var j=1;j<=31;j++){dd.add(new Option(j,j))}
+
+  $("go").onclick=function(){
+    var y=+$("yy").value,cy=new Date().getFullYear();
+    if(!(y>=1900&&y<=cy)){$("yy").focus();return}
+    var nmv=$("nm").value.trim();
+    if(nmv&&toRomaji(nmv)===null){$("err").textContent="漢字は変換できません。ひらがな・カタカナ・ローマ字で入力してください。";return}
+    $("err").textContent="";
+    var b={y:y,m:+mm.value,d:+dd.value,n:nmv};
+    var max=new Date(b.y,b.m,0).getDate();
+    if(b.d>max){b.d=max}
+    save(b);show(b);
+  };
+  $("change").onclick=function(){
+    var b=load();if(b){$("yy").value=b.y;mm.value=b.m;dd.value=b.d;$("nm").value=b.n||""}
+    $("view").hidden=true;$("setup").hidden=false;
+  };
+  $("share").onclick=function(){
+    var btn=$("share");
+    function done(){btn.textContent="コピーしました";setTimeout(function(){btn.textContent="テキストをコピー"},1800)}
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(shareText).then(done)}
+      else{var t=document.createElement("textarea");t.value=shareText;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();done()}
+    }catch(e){}
+  };
+
+  $("nm").oninput=function(){var v=$("nm").value,t=toRomaji(v);$("conv").textContent=t===null?"漢字は使えません":(/[^\x00-\x7F]/.test(v)?"ローマ字: "+t:"")};
+  function loadImg(src){return new Promise(function(res,rej){var im=new Image();im.onload=function(){res(im)};im.onerror=rej;im.src=src})}
+  function rrect(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
+  function wrapT(x,t,w){var L2=[],l="";for(var i=0;i<t.length;i++){var c=t[i];if(x.measureText(l+c).width>w&&l){L2.push(l);l=c}else l+=c}if(l)L2.push(l);return L2}
+  async function makeImage(){
+    var W=1080,H=1350,cv=document.createElement("canvas");cv.width=W;cv.height=H;var x=cv.getContext("2d");
+    try{await document.fonts.ready}catch(e){}
+    var SER='"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif',SAN='"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif';
+    var g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#10143a");g.addColorStop(1,"#1d2255");x.fillStyle=g;x.fillRect(0,0,W,H);
+    x.fillStyle="rgba(224,189,104,.55)";
+    for(var i=0;i<46;i++){x.beginPath();x.arc((i*197+53)%W,(i*331+29)%H,i%5===0?3:1.6,0,7);x.fill()}
+    x.textAlign="center";
+    x.fillStyle="#e0bd68";x.font="600 36px "+SER;x.fillText("ホシカゾエの数秘術",W/2,100);
+    x.fillStyle="#a9a6c9";x.font="500 32px "+SAN;x.fillText(cur.date,W/2,158);
+    x.fillStyle="#f1ead8";x.font="500 38px "+SAN;x.fillText("今日のパーソナルデイナンバー",W/2,250);
+    x.strokeStyle="#e0bd68";x.lineWidth=3;x.beginPath();x.arc(W/2,500,190,0,Math.PI*2);x.stroke();
+    x.strokeStyle="rgba(224,189,104,.3)";x.lineWidth=1.5;x.beginPath();x.arc(W/2,500,214,0,Math.PI*2);x.stroke();
+    x.fillStyle="#e0bd68";x.font="800 250px "+SER;x.textBaseline="middle";x.fillText(String(cur.n),W/2,515);x.textBaseline="alphabetic";
+    x.fillStyle="#f1ead8";x.font="600 66px "+SER;x.fillText(cur.info.k,W/2,800);
+    var im=await loadImg(cur.ch.i),ih=360,iw=im.width*ih/im.height;
+    x.drawImage(im,70,890,iw,ih);
+    var bx=70+iw+30,bw=W-70-bx,tw=bw-64;
+    x.font="500 34px "+SAN;var lines=wrapT(x,cur.ch.s[cur.n],tw);
+    var bh=Math.max(250,40+44+lines.length*54+30);
+    x.fillStyle="rgba(255,250,240,.08)";rrect(x,bx,900,bw,bh,28);x.fill();
+    x.strokeStyle="rgba(224,189,104,.45)";x.lineWidth=2;x.stroke();
+    x.textAlign="left";x.fillStyle=cur.ch.h;x.font="700 32px "+SAN;x.fillText(cur.ch.n,bx+32,952);
+    x.fillStyle="#f1ead8";x.font="500 34px "+SAN;
+    lines.forEach(function(l,k){x.fillText(l,bx+32,1006+k*54)});
+    x.textAlign="center";x.fillStyle="#a9a6c9";x.font="500 28px "+SAN;x.fillText("あなたの数字も、無料で見てみよう",W/2,1305);
+    return new Promise(function(res){cv.toBlob(res,"image/png")});
+  }
+  var mUrl=null;
+  function closeModal(){$("modal").hidden=true;if(mUrl){URL.revokeObjectURL(mUrl);mUrl=null}}
+  $("shareimg").onclick=async function(){
+    if(!cur)return;var btn=$("shareimg");btn.disabled=true;
+    try{
+      var blob=await makeImage(),file=new File([blob],"hoshikazoe-today.png",{type:"image/png"});
+      mUrl=URL.createObjectURL(blob);$("mimg").src=mUrl;$("msave").href=mUrl;
+      var can=false;try{can=!!(navigator.canShare&&navigator.canShare({files:[file]}))}catch(e){}
+      $("msend").hidden=!can;
+      $("msend").onclick=function(){navigator.share({files:[file],text:"今日のパーソナルデイナンバーは"+cur.n+"「"+cur.info.k+"」 #数秘術 #パーソナルデイナンバー"}).catch(function(){})};
+      $("modal").hidden=false;$("mclose").focus();
+    }catch(e){}
+    btn.disabled=false;
+  };
+  $("mclose").onclick=closeModal;
+  $("modal").onclick=function(e){if(e.target===$("modal"))closeModal()};
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("modal").hidden)closeModal()});
+  function refresh(){var b=load();if(b&&!$("view").hidden&&dkey()!==shownKey)show(b)}
+  document.addEventListener("visibilitychange",function(){if(!document.hidden)refresh()});
+  window.addEventListener("pageshow",refresh);
+  window.addEventListener("focus",refresh);
+  setInterval(refresh,60000);
+
+  var dp=null;
+  function standalone(){return (window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true}
+  function showInst(mode){
+    if(standalone())return;
+    $("inst").hidden=false;$("instbtn").hidden=mode!=="btn";
+    $("insttxt").textContent=mode==="btn"?"ホーム画面に追加すると、アプリのようにすぐ開けます。":"Safariの共有ボタン（四角から矢印が出ているマーク）→「ホーム画面に追加」で、アプリのようにすぐ開けます。LINEやXの中で開いている場合は、先にSafariで開いてください。";
+  }
+  window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();dp=e;showInst("btn")});
+  window.addEventListener("appinstalled",function(){$("inst").hidden=true});
+  $("instbtn").onclick=function(){if(!dp)return;dp.prompt();dp.userChoice.then(function(){dp=null;$("inst").hidden=true})};
+  if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!standalone())showInst("ios");
+  if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){navigator.serviceWorker.register("sw.js").catch(function(){})}
+
+  var saved=load();
+  if(saved){show(saved)}else{$("setup").hidden=false}
+})();
+</script>
+</body>
+</html>

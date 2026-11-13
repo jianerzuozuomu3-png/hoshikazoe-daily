@@ -1,0 +1,25 @@
+{
+ "name": "今日の数字｜ホシカゾエ",
+ "short_name": "今日の数字",
+ "description": "誕生日でわかる、今日のパーソナルデイナンバー",
+ "lang": "ja",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#10143a",
+ "theme_color": "#10143a",
+ "icons": [
+  {
+   "src": "icons/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any maskable"
+  },
+  {
+   "src": "icons/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any maskable"
+  }
+ ]
+}

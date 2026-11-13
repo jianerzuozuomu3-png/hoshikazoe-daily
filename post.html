@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>投稿画像メーカー｜ホシカゾエ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6efe0;--panel:#fffaf0;--ink:#2a2440;--sub:#6a6280;--gold:#a8802a;--line:#e1d3b3;--on:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10143a;--panel:#191e4d;--ink:#f1ead8;--sub:#a9a6c9;--gold:#e0bd68;--line:#343a78;--on:#10143a}}
+:root[data-theme="dark"]{--bg:#10143a;--panel:#191e4d;--ink:#f1ead8;--sub:#a9a6c9;--gold:#e0bd68;--line:#343a78;--on:#10143a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;line-height:1.7}
+main{max-width:30rem;margin:0 auto;padding:1.25rem 1.25rem 3rem}
+h1{font-family:"Shippori Mincho","Hiragino Mincho ProN",serif;font-weight:600;font-size:1.4rem;margin:0 0 .25rem}
+.sub{color:var(--sub);font-size:.9rem;margin:0 0 1rem}
+.grid{display:grid;grid-template-columns:repeat(9,1fr);gap:.3rem;margin-bottom:1rem}
+.grid button{padding:.6rem 0;border-radius:.6rem;font-size:1.05rem}
+.grid button[aria-pressed="true"]{background:var(--gold);color:var(--on)}
+.grid button{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.row{display:flex;gap:1rem;margin-bottom:1rem;font-size:.9rem;flex-wrap:wrap}
+img#pv{width:100%;border-radius:.8rem;border:1px solid var(--line);display:block}
+.tools{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+button.act,.btn{font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:2rem;padding:.7rem 1.3rem;background:var(--gold);color:var(--on);text-decoration:none;display:inline-block}
+button.ghost{background:none;color:var(--sub);border:1px solid var(--line);font-weight:500}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+pre{white-space:pre-wrap;word-break:break-all;background:var(--panel);border:1px solid var(--line);border-radius:.8rem;padding:.9rem;font:inherit;font-size:.9rem;margin:0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <h1>投稿画像メーカー</h1>
+  <p class="sub">数字を選ぶと、Xなどに添える画像と投稿文ができます。</p>
+  <div class="grid" id="nums" role="group" aria-label="パーソナルデイナンバー"></div>
+  <div class="row">
+    <label><input type="radio" name="sz" value="v" checked> 縦（1080×1350）</label>
+    <label><input type="radio" name="sz" value="s"> 正方形（1080×1080）</label>
+  </div>
+  <img id="pv" alt="投稿用の画像">
+  <div class="tools">
+    <a id="dl" class="btn" download="hoshikazoe-post.png">画像を保存</a>
+    <button id="sh" class="act" type="button" hidden>共有する</button>
+    <button id="cp" class="ghost" type="button">投稿文をコピー</button>
+  </div>
+  <pre id="txt"></pre>
+</main>
+<script>
+(function(){
+  var N=[null,
+   {k:"はじまりの日",t:"新しいことに手をつけるのに向いた日。小さくても、最初の一歩を。",a:"先延ばしにしていたことを1つ始める"},
+   {k:"よりそいの日",t:"焦らず、人の気持ちに耳を傾ける日。急いで結論を出さなくて大丈夫。",a:"誰かに「ありがとう」を伝える"},
+   {k:"たのしむ日",t:"話す・書く・遊ぶ。表現すると流れがよくなる日。",a:"好きなことに30分使う"},
+   {k:"ととのえる日",t:"土台を固める日。片づけや整理、地味な作業がはかどります。",a:"机かカバンの中を整理する"},
+   {k:"ひらく日",t:"変化や刺激に向いた日。いつもと違う選択が、いい風を連れてきます。",a:"普段通らない道を歩いてみる"},
+   {k:"いつくしむ日",t:"家族や身近な人、そして自分をいたわる日。心地よさを大切に。",a:"温かい飲み物でひと息つく"},
+   {k:"しずまる日",t:"ひとりで考え、学び、休むのに向く日。内側の声に耳をすませて。",a:"スマホを置いて静かな時間をつくる"},
+   {k:"みのらせる日",t:"仕事やお金など、現実的なことを前に進める日。決めて動くと結果につながります。",a:"後回しの手続きや連絡を1つ片づける"},
+   {k:"手ばなす日",t:"区切りと感謝の日。終わらせるものを整え、次への余白をつくります。",a:"不要なものを1つ手放す"}
+  ];
+  var L={1:["開拓者","自分の道を切り拓く、リーダー気質の人。"],2:["調和の人","人の気持ちに寄りそう、やさしい調整役。"],3:["表現者","明るく創造的で、楽しさを広げる人。"],4:["積み上げる人","努力を重ねて形にする、安定感のある人。"],5:["自由人","変化を楽しみ、軽やかに動く冒険家。"],6:["愛の人","世話好きで、まわりを包み込む人。"],7:["探究者","深く考え、物事の本質を見抜く思索家。"],8:["実現者","大きな目標を現実にする力をもつ人。"],9:["見守る人","広い心で人を理解する、共感力の高い人。"],11:["ひらめきの人","直感が鋭く、人の心に灯をともす人。"],22:["大きな夢の設計者","大きな理想を現実の形にする人。"],33:["無償の愛の人","惜しみなく人を支え、癒やす人。"]};
+  var C=[
+   {n:"紅",tag:"姉御肌の占い師",c:"var(--kurenai)",h:"#e0605f",i:"images/kurenai.webp",s:[null,
+    "今日は始めた者勝ちだよ。迷ってるなら、ほら、さっさと一歩目いきな！",
+    "そんなに急ぐんじゃないよ。相手の話をちゃんと聞いてやりな。それが今日の勝ち筋さ。",
+    "今日は堅いこと抜きだ。思いっきり楽しんで、言いたいことは言っちゃいな！",
+    "地味な仕事ほど、あとで効いてくるんだよ。今日はコツコツ片づけていきな。",
+    "いつもと違うことをやってみな。たまには流れに乗っちゃうのも悪くないよ。",
+    "頑張ってばかりじゃ持たないよ。今日は自分もちゃんと労ってやりな。",
+    "今日は無理に動かなくていい。ひとりでゆっくり、頭と心を休ませな。",
+    "ここ一番は今日だよ。腹をくくって決めたら、あとは進むだけさ！",
+    "終わらせるのも立派な仕事だよ。ありがとうって言って、すっぱり手放しな。"]},
+   {n:"ポラリス",tag:"星読みの猫",c:"var(--polaris)",h:"#7ab6d9",i:"images/polaris.webp",s:[null,
+    "今日は新しいことを始めるのにぴったりの日にゃ。小さな一歩で大丈夫にゃ！",
+    "今日はゆっくり、相手の気持ちに寄りそう日にゃ。のんびりいくにゃ〜",
+    "今日はいっぱい楽しむ日にゃ。おしゃべりも、遊びも、思いきりやるにゃ！",
+    "今日はお部屋の整理にいい日にゃ。ととのうと、心も軽くなるにゃ。",
+    "今日は新しい風が吹く日にゃ。いつもと違う道、歩いてみるにゃ？",
+    "今日は自分にやさしくする日にゃ。ぽかぽかするものを選ぶといいにゃ。",
+    "今日は静かに過ごす日にゃ。ひなたぼっこするみたいに、ゆっくり休むにゃ。",
+    "今日は動けば形になる日にゃ。気になってたこと、ひとつ片づけるにゃ！",
+    "今日は区切りの日にゃ。今までに感謝して、そっと手ばなすにゃ。"]},
+   {n:"あかり",tag:"ノリのいい親友",c:"var(--akari)",h:"#efb04a",i:"images/akari.webp",s:[null,
+    "今日スタートの日じゃん！やりたかったこと、ちょっとだけでも始めちゃお！",
+    "今日は焦らなくて大丈夫だよ〜。誰かの話をゆっくり聞いてあげよっか。",
+    "今日めっちゃ楽しめる日だよ！しゃべって、笑って、思いっきり遊ぼ！",
+    "今日は整える日だね。片づけたらスッキリするから、ちょっとだけやってみて！",
+    "今日はいつもと違うことするチャンスじゃん！ちょっと冒険してみよ〜！",
+    "今日は自分にもやさしくしてあげてね。ごほうびタイム作っちゃお！",
+    "今日はひとりでのんびりでOK！ちゃんと休むのも大事なんだから。",
+    "今日は決めて動く日！やるって決めたら、もう半分できたようなもんだよ！",
+    "今日は区切りの日だね。いろいろありがとって言って、スッキリ手放そ！"]}
+  ];
+
+  var CH={1:0,2:1,3:2,4:0,5:1,6:2,7:0,8:1,9:2};
+  var $=function(id){return document.getElementById(id)};
+  var num=1,url=null,fileObj=null,txt="";
+  var APP=new URL("./",location.href).href;
+  function loadImg(src){return new Promise(function(res,rej){var im=new Image();im.onload=function(){res(im)};im.onerror=rej;im.src=src})}
+  function rrect(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
+  function wrapT(x,t,w){var L2=[],l="";for(var i=0;i<t.length;i++){var c=t[i];if(x.measureText(l+c).width>w&&l){L2.push(l);l=c}else l+=c}if(l)L2.push(l);return L2}
+  async function card(n){
+    var W=1080,H=1350,cv=document.createElement("canvas");cv.width=W;cv.height=H;var x=cv.getContext("2d");
+    try{await document.fonts.ready}catch(e){}
+    var ch=C[CH[n]],info=N[n];
+    var SER='"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif',SAN='"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif';
+    var g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#10143a");g.addColorStop(1,"#1d2255");x.fillStyle=g;x.fillRect(0,0,W,H);
+    x.fillStyle="rgba(224,189,104,.55)";
+    for(var i=0;i<46;i++){x.beginPath();x.arc((i*197+53)%W,(i*331+29)%H,i%5===0?3:1.6,0,7);x.fill()}
+    x.textAlign="center";
+    x.fillStyle="#e0bd68";x.font="600 36px "+SER;x.fillText("ホシカゾエの数秘術",W/2,120);
+    x.fillStyle="#f1ead8";x.font="500 40px "+SAN;x.fillText("今日のパーソナルデイナンバーが",W/2,235);
+    x.strokeStyle="#e0bd68";x.lineWidth=3;x.beginPath();x.arc(W/2,500,190,0,Math.PI*2);x.stroke();
+    x.strokeStyle="rgba(224,189,104,.3)";x.lineWidth=1.5;x.beginPath();x.arc(W/2,500,214,0,Math.PI*2);x.stroke();
+    x.fillStyle="#e0bd68";x.font="800 250px "+SER;x.textBaseline="middle";x.fillText(String(n),W/2,515);x.textBaseline="alphabetic";
+    x.fillStyle="#f1ead8";x.font="500 40px "+SAN;x.fillText("の人へ",W/2,790);
+    x.font="600 66px "+SER;x.fillText(info.k,W/2,868);
+    var im=await loadImg(ch.i),ih=330,iw=im.width*ih/im.height;
+    x.drawImage(im,70,930,iw,ih);
+    var bx=70+iw+30,bw=W-70-bx,tw=bw-64;
+    x.font="500 34px "+SAN;var lines=wrapT(x,ch.s[n],tw);
+    var bh=Math.max(240,40+44+lines.length*54+30);
+    x.fillStyle="rgba(255,250,240,.08)";rrect(x,bx,945,bw,bh,28);x.fill();
+    x.strokeStyle="rgba(224,189,104,.45)";x.lineWidth=2;x.stroke();
+    x.textAlign="left";x.fillStyle=ch.h;x.font="700 32px "+SAN;x.fillText(ch.n,bx+32,997);
+    x.fillStyle="#f1ead8";x.font="500 34px "+SAN;
+    lines.forEach(function(l,k){x.fillText(l,bx+32,1051+k*54)});
+    x.textAlign="center";x.fillStyle="#a9a6c9";x.font="500 28px "+SAN;x.fillText("あなたの数字も、無料で見てみよう",W/2,1318);
+    return cv;
+  }
+  async function render(){
+    var cv=await card(num),sq=document.querySelector('input[name=sz]:checked').value==="s";
+    if(sq){
+      var s2=document.createElement("canvas");s2.width=1080;s2.height=1080;var x=s2.getContext("2d");
+      var g=x.createLinearGradient(0,0,0,1080);g.addColorStop(0,"#10143a");g.addColorStop(1,"#1d2255");x.fillStyle=g;x.fillRect(0,0,1080,1080);
+      x.drawImage(cv,108,0,864,1080);cv=s2;
+    }
+    var blob=await new Promise(function(res){cv.toBlob(res,"image/png")});
+    if(url)URL.revokeObjectURL(url);
+    url=URL.createObjectURL(blob);$("pv").src=url;$("dl").href=url;
+    fileObj=new File([blob],"hoshikazoe-post-"+num+".png",{type:"image/png"});
+    var can=false;try{can=!!(navigator.canShare&&navigator.canShare({files:[fileObj]}))}catch(e){}
+    $("sh").hidden=!can;
+    var ch=C[CH[num]];
+    txt="今日のパーソナルデイが【"+num+"】の人へ🌙\n"+N[num].k+"\n\n"+ch.n+"「"+ch.s[num]+"」\n\nあなたの数字は？\n▶︎ "+APP+"\n#数秘術 #パーソナルデイナンバー";
+    $("txt").textContent=txt;
+  }
+  var box=$("nums");
+  for(var k=1;k<=9;k++){(function(k){var b=document.createElement("button");b.type="button";b.textContent=k;b.setAttribute("aria-pressed",k===1?"true":"false");b.setAttribute("aria-label","数字"+k);
+    b.onclick=function(){num=k;[].forEach.call(box.children,function(c,i){c.setAttribute("aria-pressed",i+1===k?"true":"false")});render()};box.appendChild(b)})(k)}
+  [].forEach.call(document.querySelectorAll("input[name=sz]"),function(e){e.onchange=render});
+  $("sh").onclick=function(){navigator.share({files:[fileObj],text:txt}).catch(function(){})};
+  $("cp").onclick=function(){var b=$("cp");function ok(){b.textContent="コピーしました";setTimeout(function(){b.textContent="投稿文をコピー"},1800)}
+    try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok)}else{var t=document.createElement("textarea");t.value=txt;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();ok()}}catch(e){}};
+  render();
+})();
+</script>
+</body>
+</html>
