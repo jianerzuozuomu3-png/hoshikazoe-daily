@@ -16,12 +16,12 @@
 <meta property="og:site_name" content="ホシカゾエの数秘術">
 <meta property="og:title" content="今日の数字｜ホシカゾエ">
 <meta property="og:description" content="誕生日でわかる、今日のパーソナルデイナンバー。案内役の3人が、毎日ひとことコメントをくれます。">
-<meta property="og:url" content="https://https://jianerzuozuomu3-png.github.io/hoshikazoe-daily/">
-<meta property="og:image" content="https://https://jianerzuozuomu3-png.github.io/hoshikazoe-daily/images/ogp.png">
+<meta property="og:url" content="https://YOUR-USERNAME.github.io/YOUR-REPO/">
+<meta property="og:image" content="https://YOUR-USERNAME.github.io/YOUR-REPO/images/ogp.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="今日の数字｜ホシカゾエ">
 <meta name="twitter:description" content="誕生日でわかる、今日のパーソナルデイナンバー。毎日ひとことコメント付き。">
-<meta name="twitter:image" content="https://https://jianerzuozuomu3-png.github.io/hoshikazoe-daily/images/ogp.png">
+<meta name="twitter:image" content="https://YOUR-USERNAME.github.io/YOUR-REPO/images/ogp.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
@@ -284,7 +284,7 @@ input[type=text]{font:inherit;color:var(--ink);background:var(--bg);border:1px s
   }
   function red(n){while(n>9&&n!==11&&n!==22&&n!==33){var q=0,u=String(n);for(var i=0;i<u.length;i++)q+=+u[i];n=q}return n}
   function lifePath(b){var t=String(b.y)+String(b.m)+String(b.d),n=0;for(var i=0;i<t.length;i++)n+=+t[i];return red(n)}
-  function charIdx(d){return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)%3}
+  function charIdx(d){var n=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5);return (n+Math.floor(n/9))%3}
   function load(){try{var v=JSON.parse(localStorage.getItem(KEY));if(v&&v.y>=1900&&v.m>=1&&v.m<=12&&v.d>=1&&v.d<=31)return v}catch(e){}return null}
   function save(b){try{localStorage.setItem(KEY,JSON.stringify(b))}catch(e){}}
   var shareText="",shownKey="";
